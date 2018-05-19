@@ -7,8 +7,13 @@ var mysql = require('mysql');
 uses mysql npm module
 
 */
-exports.dbConnection = mysql.createConnection({
+let dbConnection = mysql.createConnection({
   user: 'student',
   password: 'student',
   database: 'chat'
 });
+
+dbConnection.connect((err, data) => { console.log('running from dbConnection'); });
+
+module.exports = dbConnection;
+
