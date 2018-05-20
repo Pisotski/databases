@@ -3,10 +3,15 @@ var express = require('express');
 
 module.exports = {
   messages: {
-    get: function () {
-      //
-      // var sql = 'SELECT data FROM messages';
-      // db.query(sql, )
+    get: function (callback) {
+      let queryStr = 'SELECT messages.id, messages.text, messages.roomname FROM messages left outer join users on (messages.userid = users.id) order by messages.id desc';
+      db.query(queryStr, function(err, results) {
+        if (err) {
+          console.log('error in get, models');
+        } else {
+          callback(null, results); 
+        }
+      });
     }, // a functizon which produces all the messages
     post: function (params, callback) {
       console.log(params);
@@ -25,8 +30,15 @@ module.exports = {
   users: {
     // Ditto as above.
     get: function (callback) {
-      // var sql = 'SELECT data FROM messages';
-      // db.query(sql,)      
+      let queryStr = 'SELECT * FROM users';
+      db.query(queryStr, (err, results) => {
+        if (err) {
+          console.log('error', null);
+        } else {
+          console.log(results);
+          callback(null, results);
+        }
+      });
     },
     post: function (params, callback) {
       //var sql = `insert into users (username) values ('${user}');`;
@@ -37,7 +49,6 @@ module.exports = {
         if (err) {
           console.log('error');
         } else {
-          console.log('results from model', results);
           callback(null, results);
         }
       });
